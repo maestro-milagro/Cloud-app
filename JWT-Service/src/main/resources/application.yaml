@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: JWT-Service
+  config:
+    import: "optional:configserver:http://localhost:8088"
