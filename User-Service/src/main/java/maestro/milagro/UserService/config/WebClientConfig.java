@@ -17,7 +17,7 @@ public class WebClientConfig {
 
 
     @Bean
-    public WebClient employeeWebClient() {
+    public WebClient JWTWebClient() {
         return WebClient.builder()
                 .baseUrl("http://JWT-Service")
                 .filter(filterFunction)
@@ -28,7 +28,7 @@ public class WebClientConfig {
     public JWTClient employeeClient() {
         HttpServiceProxyFactory httpServiceProxyFactory
                 = HttpServiceProxyFactory
-                .builder(WebClientAdapter.forClient(employeeWebClient()))
+                .builder(WebClientAdapter.forClient(JWTWebClient()))
                 .build();
         return httpServiceProxyFactory.createClient(JWTClient.class);
     }
