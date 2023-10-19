@@ -1,69 +1,64 @@
 package maestro.milagro.JWTService.service;
 
-import io.jsonwebtoken.Claims;
 import jakarta.security.auth.message.AuthException;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import maestro.milagro.JWTService.model.ResponseLog;
+import maestro.milagro.JWTService.model.User;
+import maestro.milagro.JWTService.model.UserAndTokens;
+import maestro.milagro.JWTService.repository.TokenRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Service
-@RequiredArgsConstructor
 public class AuthService {
-
-    private final UserService userService;
-    private final Map<String, String> refreshStorage = new HashMap<>();
-    private final JwtProvider jwtProvider;
-
-    public JwtResponse login(@NonNull JwtRequest authRequest) {
-        final User user = userService.getByLogin(authRequest.getLogin())
-                .orElseThrow(() -> new AuthException("Пользователь не найден"));
-        if (user.getPassword().equals(authRequest.getPassword())) {
-            final String accessToken = jwtProvider.generateAccessToken(user);
-            final String refreshToken = jwtProvider.generateRefreshToken(user);
-            refreshStorage.put(user.getLogin(), refreshToken);
-            return new JwtResponse(accessToken, refreshToken);
-        } else {
-            throw new AuthException("Неправильный пароль");
-        }
+    private final TokenRepository redisRepository;
+    private final JWTProvider jwtProvider;
+    @Autowired
+    public AuthService(TokenRepository redisRepository, JWTProvider jwtProvider){
+        this.redisRepository = redisRepository;
+        this.jwtProvider = jwtProvider;
     }
 
-    public JwtResponse getAccessToken(@NonNull String refreshToken) {
-        if (jwtProvider.validateRefreshToken(refreshToken)) {
-            final Claims claims = jwtProvider.getRefreshClaims(refreshToken);
-            final String login = claims.getSubject();
-            final String saveRefreshToken = refreshStorage.get(login);
-            if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
-                final User user = userService.getByLogin(login)
-                        .orElseThrow(() -> new AuthException("Пользователь не найден"));
-                final String accessToken = jwtProvider.generateAccessToken(user);
-                return new JwtResponse(accessToken, null);
+    public boolean validateAccess(String accessToken){
+        return jwtProvider.validateAccessToken(accessToken);
+    }
+    public boolean validateRef(String refreshToken){
+        return jwtProvider.validateRefreshToken(refreshToken);
+    }
+
+    public ResponseLog login(@NonNull User user) {
+        final String accessToken = jwtProvider.generateAccessToken(user);
+        final String refreshToken = jwtProvider.generateRefreshToken(user);
+        redisRepository.save(new UserAndTokens(user, accessToken, refreshToken));
+        return new ResponseLog(accessToken);
+    }
+
+    public ResponseLog getAccessToken(@NonNull String accessToken) throws AuthException {
+        String refreshToken = redisRepository.findById(accessToken).get().getRefreshToken();
+            if (refreshToken != null) {
+                final User user = redisRepository.findById(accessToken).get().getUser();
+                if (user == null) {
+                    throw new AuthException("Пользователь не найден");
+                }
+                final String newAccessToken = jwtProvider.generateAccessToken(user);
+                return new ResponseLog(newAccessToken);
             }
-        }
-        return new JwtResponse(null, null);
+        return new ResponseLog(null);
     }
 
-    public JwtResponse refresh(@NonNull String refreshToken) {
-        if (jwtProvider.validateRefreshToken(refreshToken)) {
-            final Claims claims = jwtProvider.getRefreshClaims(refreshToken);
-            final String login = claims.getSubject();
-            final String saveRefreshToken = refreshStorage.get(login);
-            if (saveRefreshToken != null && saveRefreshToken.equals(refreshToken)) {
-                final User user = userService.getByLogin(login)
-                        .orElseThrow(() -> new AuthException("Пользователь не найден"));
-                final String accessToken = jwtProvider.generateAccessToken(user);
+    public ResponseLog refresh(@NonNull String accessToken) throws AuthException {
+        String refreshToken = redisRepository.findById(accessToken).get().getRefreshToken();
+            if (refreshToken != null) {
+                final User user = redisRepository.findById(accessToken).get().getUser();
+                if (user == null) {
+                    throw new AuthException("Пользователь не найден");
+                }
+                final String newAccessToken = jwtProvider.generateAccessToken(user);
                 final String newRefreshToken = jwtProvider.generateRefreshToken(user);
-                refreshStorage.put(user.getLogin(), newRefreshToken);
-                return new JwtResponse(accessToken, newRefreshToken);
+                redisRepository.save(new UserAndTokens(user, newAccessToken, newRefreshToken));
+                return new ResponseLog(newAccessToken);
             }
-        }
         throw new AuthException("Невалидный JWT токен");
-    }
-
-    public JwtAuthentication getAuthInfo() {
-        return (JwtAuthentication) SecurityContextHolder.getContext().getAuthentication();
     }
 
 }

@@ -1,21 +1,12 @@
 package maestro.milagro.JWTService.repository;
 
-import jakarta.annotation.PostConstruct;
-import maestro.milagro.JWTService.model.User;
 import maestro.milagro.JWTService.model.UserAndTokens;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.keyvalue.repository.KeyValueRepository;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Map;
 @Repository
-public interface RedisRepositoryImp extends KeyValueRepository<UserAndTokens, String>{
-
+public interface TokenRepository extends JpaRepository<UserAndTokens, String> {
 //    private final RedisTemplate<User, String> redisTemplate;
 //    private HashOperations<User, Integer, String> hashOperations;
 //

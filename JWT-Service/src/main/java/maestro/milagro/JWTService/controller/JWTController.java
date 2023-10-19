@@ -1,11 +1,12 @@
 package maestro.milagro.JWTService.controller;
 
+import jakarta.security.auth.message.AuthException;
 import maestro.milagro.JWTService.model.ResponseLog;
 import maestro.milagro.JWTService.model.User;
 import maestro.milagro.JWTService.model.UserAndTokens;
-import maestro.milagro.JWTService.repository.RedisRepositoryImp;
+import maestro.milagro.JWTService.repository.TokenRepository;
+import maestro.milagro.JWTService.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,10 +16,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class JWTController {
     @Autowired
-    RedisRepositoryImp redisRepository;
-    @PostMapping("/token")
-    public ResponseEntity<ResponseLog> authToken(@RequestBody User user){
-        return new ResponseEntity<>(new ResponseLog("re"), HttpStatus.OK);
+    AuthService authService;
+    @Autowired
+    TokenRepository redisRepository;
+    @PostMapping("/new/token")
+    public ResponseEntity<ResponseLog> newUser(@RequestBody User user){
+        return new ResponseEntity<>(authService.login(user), HttpStatus.OK);
+    }
+    @PostMapping("/old/token")
+    public ResponseEntity<ResponseLog> oldUser(@RequestBody User user){
+
+        return new ResponseEntity<>(authService.login(user), HttpStatus.OK);
+    }
+    @PostMapping("/refresh/Atoken")
+    public ResponseEntity<ResponseLog> refreshAuthToken(@RequestBody String accessToken) throws AuthException {
+        return new ResponseEntity<>(authService.getAccessToken(accessToken), HttpStatus.OK);
+    }
+    @PostMapping("/refresh/Rtoken")
+    public ResponseEntity<ResponseLog> refreshRefToken(@RequestBody String accessToken) throws AuthException {
+        return new ResponseEntity<>(authService.refresh(accessToken), HttpStatus.OK);
     }
     @PostMapping("/check")
     public void check(@RequestBody UserAndTokens userAndTokens){
@@ -29,6 +45,10 @@ public class JWTController {
         System.out.println(userAndTokens.getUser());
         System.out.println(userAndTokens.getRefreshToken());
         redisRepository.save(userAndTokens);
-        System.out.println(redisRepository.findById(userAndTokens.getRefreshToken()));
+        UserAndTokens s = userAndTokens;
+        s.setAccessToken("2313");
+        redisRepository.save(s);
+        System.out.println(redisRepository.findAll());
     }
+
 }

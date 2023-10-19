@@ -12,6 +12,6 @@ import org.springframework.web.service.annotation.PostExchange;
 
 @HttpExchange
 public interface JWTClient {
-    @PostExchange("/token")
-    public ResponseEntity<ResponseLog> authToken(@RequestBody User user);
+    @PostExchange("/new/token")
+    public ResponseEntity<ResponseLog> newUser(@RequestBody User user);
 }

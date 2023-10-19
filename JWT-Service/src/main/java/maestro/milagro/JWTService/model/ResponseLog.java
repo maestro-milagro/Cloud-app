@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseLog {
-    @JsonProperty("auth-token") String accessToken;
+    @JsonProperty("auth-token") private String accessToken;
 }
