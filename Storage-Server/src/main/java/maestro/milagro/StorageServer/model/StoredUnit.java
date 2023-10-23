@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StoredUnit {
+    private String filename;
     private User user;
     private File file;
 }

@@ -1,5 +1,6 @@
 package maestro.milagro.UserService.client;
 
+import jakarta.security.auth.message.AuthException;
 import maestro.milagro.UserService.model.ResponseLog;
 import maestro.milagro.UserService.model.User;
 import org.springframework.http.HttpStatus;
@@ -14,4 +15,7 @@ import org.springframework.web.service.annotation.PostExchange;
 public interface JWTClient {
     @PostExchange("/new/token")
     public ResponseEntity<ResponseLog> newUser(@RequestBody User user);
+
+    @PostExchange("/old/token")
+    ResponseEntity<ResponseLog> oldUser(@RequestBody User user) throws AuthException;
 }

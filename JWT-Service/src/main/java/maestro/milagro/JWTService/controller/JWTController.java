@@ -24,9 +24,8 @@ public class JWTController {
         return new ResponseEntity<>(authService.login(user), HttpStatus.OK);
     }
     @PostMapping("/old/token")
-    public ResponseEntity<ResponseLog> oldUser(@RequestBody User user){
-
-        return new ResponseEntity<>(authService.login(user), HttpStatus.OK);
+    public ResponseEntity<ResponseLog> oldUser(@RequestBody User user) throws AuthException {
+        return new ResponseEntity<>(authService.getOldToken(user), HttpStatus.OK);
     }
     @PostMapping("/refresh/Atoken")
     public ResponseEntity<ResponseLog> refreshAuthToken(@RequestBody String accessToken) throws AuthException {

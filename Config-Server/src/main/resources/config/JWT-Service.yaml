@@ -10,3 +10,15 @@ management:
   tracing:
     sampling:
       probability: 1.0
+
+spring:
+  jpa:
+    database: POSTGRESQL
+    hibernate:
+      ddl-auto: update
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/JWT_db
+    username: postgres
+    password: nhfnfnf1
+    driverClassName: org.postgresql.Driver
