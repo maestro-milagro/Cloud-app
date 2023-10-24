@@ -35,6 +35,10 @@ public class JWTController {
     public ResponseEntity<ResponseLog> refreshRefToken(@RequestBody String accessToken) throws AuthException {
         return new ResponseEntity<>(authService.refresh(accessToken), HttpStatus.OK);
     }
+    @PostMapping("/get/user")
+    public User getUser(@RequestBody String accessToken) throws AuthException {
+        return authService.findUser(accessToken);
+    }
     @PostMapping("/check")
     public void check(@RequestBody UserAndTokens userAndTokens){
 //        System.out.println(userAndTokens.getUser());

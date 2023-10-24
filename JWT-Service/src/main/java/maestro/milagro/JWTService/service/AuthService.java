@@ -26,6 +26,12 @@ public class AuthService {
     public boolean validateRef(String refreshToken){
         return jwtProvider.validateRefreshToken(refreshToken);
     }
+    public User findUser(String accessToken){
+        if(jwtProvider.validateAccessToken(accessToken)) {
+            return tokenRepository.findByAccessToken(accessToken).get().getUser();
+        }
+        return new User(null, null);
+    }
     public ResponseLog getOldToken(User user) throws AuthException {
         String accessToken = tokenRepository.findByUser(user).get().getAccessToken();
         if(jwtProvider.validateAccessToken(accessToken)){

@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.RedisHash;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserAndTokens {
+    @EmbeddedId
     private User user;
     private String accessToken;
     private String refreshToken;
