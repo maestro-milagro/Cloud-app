@@ -17,8 +17,8 @@ public class ExceptionHandler {
     public ResponseEntity<ResponseError> ueHandler(UnauthorizedException e){
         return new ResponseEntity<>(new ResponseError(e.getMessage(), 401), HttpStatus.UNAUTHORIZED);
     }
-    @org.springframework.web.bind.annotation.ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<ResponseError> iseHandler(IllegalStateException e) {
-        return new ResponseEntity<>(new ResponseError(e.getMessage(), 500), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @org.springframework.web.bind.annotation.ExceptionHandler(IllegalStateException.class)
+//    public ResponseEntity<ResponseError> iseHandler(IllegalStateException e) {
+//        return new ResponseEntity<>(new ResponseError(e.getMessage(), 500), HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 }

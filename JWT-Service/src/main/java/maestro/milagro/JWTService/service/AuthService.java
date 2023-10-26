@@ -30,6 +30,7 @@ public class AuthService {
         if(jwtProvider.validateAccessToken(accessToken)) {
             return tokenRepository.findByAccessToken(accessToken).get().getUser();
         }
+        tokenRepository.deleteByAccessToken(accessToken);
         return new User(null, null);
     }
     public ResponseLog getOldToken(User user) throws AuthException {
