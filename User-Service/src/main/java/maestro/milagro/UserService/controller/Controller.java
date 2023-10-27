@@ -7,6 +7,7 @@ import maestro.milagro.UserService.model.ResponseLog;
 import maestro.milagro.UserService.model.User;
 import maestro.milagro.UserService.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,5 +28,10 @@ public class Controller {
             return jwtClient.oldUser(user);
         }
         return jwtClient.newUser(user);
+    }
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@RequestBody String accessToken) throws AuthException{
+        jwtClient.logout(accessToken);
+        return new ResponseEntity<>("Success logout", HttpStatus.OK);
     }
 }

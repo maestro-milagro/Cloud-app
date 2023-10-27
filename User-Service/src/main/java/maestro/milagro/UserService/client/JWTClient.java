@@ -18,4 +18,7 @@ public interface JWTClient {
 
     @PostExchange("/old/token")
     ResponseEntity<ResponseLog> oldUser(@RequestBody User user) throws AuthException;
+
+    @PostExchange("/logout")
+    void logout(@RequestBody String accessToken) throws AuthException;
 }

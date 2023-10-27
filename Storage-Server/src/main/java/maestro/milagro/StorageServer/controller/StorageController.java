@@ -9,6 +9,7 @@ import maestro.milagro.StorageServer.model.ListUnit;
 import maestro.milagro.StorageServer.model.StoredUnit;
 import maestro.milagro.StorageServer.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,5 +34,10 @@ public class StorageController {
     @GetMapping("/list")
     public ResponseEntity<List<ListUnit>> getList(@RequestHeader("auth-token") String authToken, @QueryParam("limit") int limit) throws UnauthorizedException, AuthException, BedCredentials {
         return service.getAllWithLimit(authToken, limit);
+    }
+    @PutMapping("/file")
+    public ResponseEntity<String> editFilename(@RequestHeader("auth-token") String authToken, @QueryParam("filename") String filename, @RequestBody String name) throws UnauthorizedException, AuthException, BedCredentials {
+        service.editFilename(authToken, filename, name);
+        return new ResponseEntity<>("Success upload", HttpStatus.OK);
     }
 }

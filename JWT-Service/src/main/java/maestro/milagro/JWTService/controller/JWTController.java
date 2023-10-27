@@ -39,6 +39,10 @@ public class JWTController {
     public User getUser(@RequestBody String accessToken) throws AuthException {
         return authService.findUser(accessToken);
     }
+    @PostMapping("/logout")
+    public void logout(@RequestBody String accessToken) throws AuthException {
+        authService.logout(accessToken);
+    }
     @PostMapping("/check")
     public void check(@RequestBody UserAndTokens userAndTokens){
 //        System.out.println(userAndTokens.getUser());

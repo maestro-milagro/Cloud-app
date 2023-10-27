@@ -84,5 +84,15 @@ public class StorageService {
         }
         return  new ResponseEntity<>(list.subList(0, limit), HttpStatus.OK);
     }
+    public void editFilename(String authToken, String filename, String name) throws BedCredentials, UnauthorizedException, AuthException {
+        if(authToken == null || filename == null){
+            throw new BedCredentials("Error input data");
+        }
+        User user = jwtClient.getUser(authToken);
+        if(user.getLogin() == null){
+            throw new UnauthorizedException("Unauthorized error");
+        }
+        repository.findByFilenameAndUser(filename, user).get().setFilename(name);
+    }
 
 }

@@ -26,6 +26,9 @@ public class AuthService {
     public boolean validateRef(String refreshToken){
         return jwtProvider.validateRefreshToken(refreshToken);
     }
+    public void logout(String authToken){
+        tokenRepository.deleteByAccessToken(authToken);
+    }
     public User findUser(String accessToken){
         if(jwtProvider.validateAccessToken(accessToken)) {
             return tokenRepository.findByAccessToken(accessToken).get().getUser();
