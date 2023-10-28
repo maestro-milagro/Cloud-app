@@ -1,11 +1,10 @@
 package maestro.milagro.StorageServer.service;
 
 import jakarta.security.auth.message.AuthException;
-import jakarta.ws.rs.QueryParam;
 import maestro.milagro.StorageServer.client.JWTClient;
 import maestro.milagro.StorageServer.exceptions.BedCredentials;
 import maestro.milagro.StorageServer.exceptions.UnauthorizedException;
-import maestro.milagro.StorageServer.model.File;
+import maestro.milagro.StorageServer.model.MyFile;
 import maestro.milagro.StorageServer.model.ListUnit;
 import maestro.milagro.StorageServer.model.StoredUnit;
 import maestro.milagro.StorageServer.model.User;
@@ -14,11 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,15 +26,15 @@ public class StorageService {
         this.jwtClient = jwtClient;
         this.repository = repository;
     }
-    public ResponseEntity<String> saveFile(String authToken, String filename, File file) throws AuthException, UnauthorizedException, BedCredentials {
-        if(authToken == null || filename == null || file == null){
+    public ResponseEntity<String> saveFile(String authToken, String filename, MyFile myFile) throws AuthException, UnauthorizedException, BedCredentials {
+        if(authToken == null || filename == null || myFile == null){
             throw new BedCredentials("Error input data");
         }
         User user = jwtClient.getUser(authToken);
         if(user.getLogin() == null){
             throw new UnauthorizedException("Unauthorized error");
         }
-        repository.save(new StoredUnit(filename, user, file));
+        repository.save(new StoredUnit(filename, user, myFile));
         return new ResponseEntity<>("Success upload", HttpStatus.OK);
     }
     public ResponseEntity<String> deleteFile(String authToken, String filename) throws BedCredentials, AuthException, UnauthorizedException {
@@ -55,7 +49,7 @@ public class StorageService {
 
         return new ResponseEntity<>("Success deleted", HttpStatus.OK);
     }
-    public ResponseEntity<File> downloadFile(String authToken, String filename) throws BedCredentials, AuthException, UnauthorizedException {
+    public ResponseEntity<String> downloadFile(String authToken, String filename) throws BedCredentials, AuthException, UnauthorizedException {
         if(authToken == null || filename == null){
             throw new BedCredentials("Error input data");
         }
@@ -63,8 +57,9 @@ public class StorageService {
         if(user.getLogin() == null){
             throw new UnauthorizedException("Unauthorized error");
         }
-        File file = repository.findByFilenameAndUser(filename, user).get().getFile();
-        return new ResponseEntity<>(file, HttpStatus.OK);
+        MyFile myFile = repository.findByFilenameAndUser(filename, user).get().getMyFile();
+        return new ResponseEntity<>(myFile.getFile(), HttpStatus.OK);
+//        return new ResponseEntity<>(myFile, HttpStatus.OK);
     }
     public ResponseEntity<List<ListUnit>> getAllWithLimit(String authToken, Integer limit) throws BedCredentials, UnauthorizedException, AuthException {
         if(authToken == null || limit == null){
@@ -77,7 +72,7 @@ public class StorageService {
         List<StoredUnit> list1 = repository.findByUser(user);
         List<ListUnit> list = new ArrayList<>();
         for (StoredUnit s: list1) {
-            list.add(new ListUnit(s.getFilename(), s.getFile().getFile().getBytes().length));
+            list.add(new ListUnit(s.getFilename(), s.getMyFile().getFile().length()));
         }
         if(limit > list.size()){
             return new ResponseEntity<>(list, HttpStatus.OK);

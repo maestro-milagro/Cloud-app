@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4e073385-eee5-49b7-aa02-486431bf866b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/.browserslistrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/.eslintrc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/babel.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/public/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/public/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/App.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/api/api.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/api/httpClient.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/assets/icons/delete.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/assets/icons/done-tick.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/assets/icons/done.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/assets/icons/down-arrow.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/assets/icons/download.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/assets/icons/edit.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/assets/icons/exit.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/assets/icons/up-arrow.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/assets/logo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/components/Navbar.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/components/Notifications.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/components/elements/EButton.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/components/elements/ECheckbox.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/components/elements/EInput.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/components/elements/EUpload.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/main.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/router/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/shims-vue.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/stores/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/styles/_variables.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/utilities/helpers.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/views/Home.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/src/views/Login.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front/tsconfig.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2XNxKrha40ddrUS8I94Nw8G5I8i" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4e073385-eee5-49b7-aa02-486431bf866b" name="Changes" comment="" />
+      <created>1698483278168</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1698483278168</updated>
+    </task>
+    <servers />
+  </component>
+</project>

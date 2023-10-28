@@ -12,5 +12,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class StoredUnit {
     private String filename;
     private User user;
-    private File file;
+    private MyFile myFile;
 }

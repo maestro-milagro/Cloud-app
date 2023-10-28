@@ -29,19 +29,19 @@ public class JWTController {
     }
     @PostMapping("/refresh/Atoken")
     public ResponseEntity<ResponseLog> refreshAuthToken(@RequestBody String accessToken) throws AuthException {
-        return new ResponseEntity<>(authService.getAccessToken(accessToken), HttpStatus.OK);
+        return new ResponseEntity<>(authService.getAccessToken(accessToken.substring(7)), HttpStatus.OK);
     }
     @PostMapping("/refresh/Rtoken")
     public ResponseEntity<ResponseLog> refreshRefToken(@RequestBody String accessToken) throws AuthException {
-        return new ResponseEntity<>(authService.refresh(accessToken), HttpStatus.OK);
+        return new ResponseEntity<>(authService.refresh(accessToken.substring(7)), HttpStatus.OK);
     }
     @PostMapping("/get/user")
     public User getUser(@RequestBody String accessToken) throws AuthException {
-        return authService.findUser(accessToken);
+        return authService.findUser(accessToken.substring(7));
     }
     @PostMapping("/logout")
     public void logout(@RequestBody String accessToken) throws AuthException {
-        authService.logout(accessToken);
+        authService.logout(accessToken.substring(7));
     }
     @PostMapping("/check")
     public void check(@RequestBody UserAndTokens userAndTokens){

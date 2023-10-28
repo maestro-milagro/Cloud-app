@@ -23,3 +23,15 @@ spring:
           uri: lb://Storage-Server
           predicates:
             - Path=/file/**,/list/**
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:8081"
+            allowCredentials: true
+            allowedHeaders: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - OPTIONS
+              - DELETE

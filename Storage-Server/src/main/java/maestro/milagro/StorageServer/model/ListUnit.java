@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class ListUnit {
     String filename;
-    int size;
+    long size;
 }

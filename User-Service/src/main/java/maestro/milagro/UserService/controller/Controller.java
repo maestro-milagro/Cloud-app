@@ -9,9 +9,7 @@ import maestro.milagro.UserService.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class Controller {
@@ -33,5 +31,9 @@ public class Controller {
     public ResponseEntity<String> logout(@RequestBody String accessToken) throws AuthException{
         jwtClient.logout(accessToken);
         return new ResponseEntity<>("Success logout", HttpStatus.OK);
+    }
+    @GetMapping("/login")
+    public ResponseEntity<String> get() {
+        return new ResponseEntity<>("Success log", HttpStatus.OK);
     }
 }
