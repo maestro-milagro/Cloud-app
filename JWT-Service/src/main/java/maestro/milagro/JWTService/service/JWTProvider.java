@@ -82,20 +82,4 @@ public class JWTProvider {
         }
         return false;
     }
-
-    public Claims getAccessClaims(@NonNull String token) {
-        return getClaims(token, jwtAccessSecret);
-    }
-
-    public Claims getRefreshClaims(@NonNull String token) {
-        return getClaims(token, jwtRefreshSecret);
-    }
-
-    private Claims getClaims(@NonNull String token, @NonNull Key secret) {
-        return Jwts.parserBuilder()
-                .setSigningKey(secret)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
 }

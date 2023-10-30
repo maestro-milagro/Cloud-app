@@ -2,6 +2,7 @@ package maestro.milagro.JWTService.service;
 
 import io.jsonwebtoken.Claims;
 import jakarta.security.auth.message.AuthException;
+import jakarta.transaction.Transactional;
 import lombok.NonNull;
 import maestro.milagro.JWTService.model.ResponseLog;
 import maestro.milagro.JWTService.model.User;
@@ -19,16 +20,11 @@ public class AuthService {
         this.tokenRepository = tokenRepository;
         this.jwtProvider = jwtProvider;
     }
-
-    public boolean validateAccess(String accessToken){
-        return jwtProvider.validateAccessToken(accessToken);
-    }
-    public boolean validateRef(String refreshToken){
-        return jwtProvider.validateRefreshToken(refreshToken);
-    }
+    @Transactional
     public void logout(String authToken){
         tokenRepository.deleteByAccessToken(authToken);
     }
+    @Transactional
     public User findUser(String accessToken){
         if(jwtProvider.validateAccessToken(accessToken)) {
             return tokenRepository.findByAccessToken(accessToken).get().getUser();
@@ -36,6 +32,7 @@ public class AuthService {
         tokenRepository.deleteByAccessToken(accessToken);
         return new User(null, null);
     }
+    @Transactional
     public ResponseLog getOldToken(User user) throws AuthException {
         String accessToken = tokenRepository.findByUser(user).get().getAccessToken();
         if(jwtProvider.validateAccessToken(accessToken)){
@@ -47,14 +44,14 @@ public class AuthService {
         tokenRepository.deleteByAccessToken(accessToken);
         return refresh(accessToken);
     }
-
+    @Transactional
     public ResponseLog login(@NonNull User user) {
         final String accessToken = jwtProvider.generateAccessToken(user);
         final String refreshToken = jwtProvider.generateRefreshToken(user);
         tokenRepository.save(new UserAndTokens(user, accessToken, refreshToken));
         return new ResponseLog(accessToken);
     }
-
+    @Transactional
     public ResponseLog getAccessToken(@NonNull String accessToken) throws AuthException {
         String refreshToken = tokenRepository.findByAccessToken(accessToken).get().getRefreshToken();
         if (jwtProvider.validateRefreshToken(refreshToken)) {
@@ -69,7 +66,7 @@ public class AuthService {
         }
         return new ResponseLog(null);
     }
-
+    @Transactional
     public ResponseLog refresh(@NonNull String accessToken) throws AuthException {
         String refreshToken = tokenRepository.findByAccessToken(accessToken).get().getRefreshToken();
             if (jwtProvider.validateRefreshToken(refreshToken)) {

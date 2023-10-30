@@ -13,10 +13,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class Controller {
-    @Autowired
     JWTClient jwtClient;
-    @Autowired
+
     UserRepository userRepository;
+    @Autowired
+    public Controller(JWTClient jwtClient, UserRepository userRepository){
+        this.jwtClient = jwtClient;
+        this.userRepository = userRepository;
+    }
     @PostMapping("/login")
     public ResponseEntity<ResponseLog> login(@RequestBody User user) throws AuthException, BedCredentials {
         if(user.getLogin() == null || user.getPassword() == null){
