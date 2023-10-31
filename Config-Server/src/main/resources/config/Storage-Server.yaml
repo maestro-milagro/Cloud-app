@@ -4,7 +4,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://service-registry:8761/eureka/
 
 management:
   tracing:
@@ -14,4 +14,4 @@ management:
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/db
+      uri: mongodb://mongo:27017/db

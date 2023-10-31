@@ -6,9 +6,10 @@ spring:
     name: Service-Registry
 eureka:
   instance:
-    hostname: localhost
+    hostname: service-registry
   client:
     register-with-eureka: false
     fetch-registry: false
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+#      defaultZone: http://host.docker.internal:8761/eureka/

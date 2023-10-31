@@ -7,3 +7,99 @@ services:
     container_name: frontCloud
     ports:
       - "8081:8080"
+  jwt-postgres:
+    restart: always
+    image: postgres
+    environment:
+      POSTGRES_DB: "JWT_db"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "nhfnfnf1"
+    ports:
+      - "5432:5432"
+  user-postgres:
+    restart: always
+    image: postgres
+    environment:
+      POSTGRES_DB: "cloud_db"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "nhfnfnf1"
+    ports:
+      - "5433:5432"
+  mongo:
+    container_name: "mongo"
+    image: mongo
+    ports:
+      - '27017:27017'
+    restart: always
+  config-server:
+    build:
+      dockerfile: DockerfileConf
+    image: 'config-server:latest'
+    ports:
+      - '8088:8088'
+  service-registry:
+    hostname: service-registry
+    build:
+      dockerfile: DockerfileRegis
+    image: 'service-registry:latest'
+    ports:
+      - '8761:8761'
+  user-service:
+    build:
+      dockerfile: DockerfileUser
+    image: 'user-service:latest'
+    environment:
+      SPRING_CONFIG_IMPORT: configserver:http://config-server:8088
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user-postgres:5432/cloud_db
+      SPRING_DATASOURCE_USERNAME: "postgres"
+      SPRING_DATASOURCE_PASSWORD: "nhfnfnf1"
+    ports:
+      - '8084:8084'
+    depends_on:
+      - user-postgres
+      - config-server
+      - service-registry
+  jwt-service:
+    build:
+      dockerfile: DockerfileJWT
+    image: 'jwt-service:latest'
+    environment:
+      SPRING_CONFIG_IMPORT: configserver:http://config-server:8088
+      SPRING_DATASOURCE_URL: jdbc:postgresql://jwt-postgres:5432/JWT_db
+      SPRING_DATASOURCE_USERNAME: "postgres"
+      SPRING_DATASOURCE_PASSWORD: "nhfnfnf1"
+    ports:
+      - '8082:8082'
+    depends_on:
+      - jwt-postgres
+      - config-server
+      - service-registry
+  storage-server:
+    build:
+      dockerfile: DockerfileStore
+    image: 'storage-server:latest'
+    environment:
+      SPRING_CONFIG_IMPORT: configserver:http://config-server:8088
+      MONGODB_URL: mongodb://mongo:27017/db
+    links:
+      - mongo
+    ports:
+      - '8087:8087'
+    depends_on:
+      - mongo
+      - config-server
+      - service-registry
+  api-gateway:
+    build:
+      dockerfile: DockerfileGateway
+    environment:
+      SPRING_CONFIG_IMPORT: configserver:http://config-server:8088
+    image: 'api-gateway:latest'
+    ports:
+      - '8060:8060'
+    depends_on:
+      - config-server
+      - service-registry
+      - jwt-service
+      - user-service
+      - storage-server

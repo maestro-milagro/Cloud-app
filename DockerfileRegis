@@ -1,0 +1,7 @@
+FROM openjdk:17-oracle
+
+EXPOSE 8761:8761
+
+COPY Service-Registry/target/Service-Registry-0.0.1-SNAPSHOT.jar service-registry.jar
+
+ENTRYPOINT ["java","-jar","/service-registry.jar"]

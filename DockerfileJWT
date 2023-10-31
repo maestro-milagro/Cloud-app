@@ -1,0 +1,7 @@
+FROM openjdk:17-oracle
+
+EXPOSE 8082:8082
+
+COPY JWT-Service/target/JWT-Service-0.0.1-SNAPSHOT.jar jwt-service.jar
+
+ENTRYPOINT ["java","-jar","/jwt-service.jar"]

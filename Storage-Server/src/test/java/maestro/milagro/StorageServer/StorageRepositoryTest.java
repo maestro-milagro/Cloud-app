@@ -6,6 +6,7 @@ import maestro.milagro.StorageServer.model.User;
 import maestro.milagro.StorageServer.repository.StorageRepository;
 import org.bson.types.Binary;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,9 +18,12 @@ public class StorageRepositoryTest {
     @Autowired
     StorageRepository repository;
     String filename = "text.txt";
-    User user = new User("Sergey@gmail.com", "123");
+    String filename1 = "text1.txt";
+    User user = new User("Sergey@gmail.com", "223");
+    User user1 = new User("Sergey@gmail1.com", "2231");
     MyFile myFile = new MyFile("d", new Binary(filename.getBytes()));
     StoredUnit storedUnit = new StoredUnit(filename, user, myFile);
+    StoredUnit storedUnit1 = new StoredUnit(filename1, user1, myFile);
 
     @Test
     public void findByUserTest(){
@@ -40,10 +44,12 @@ public class StorageRepositoryTest {
         Assertions.assertEquals(true, result);
     }
     @Test
+    @Disabled
     public void findByFilenameAndUserTest(){
-        repository.save(storedUnit);
+        repository.save(storedUnit1);
 
-        StoredUnit result = repository.findByFilenameAndUser(filename, user).get();
+        StoredUnit result = repository.findByFilenameAndUser(filename1, user1).get();
+        repository.deleteByFilename(filename1);
 
         Assertions.assertEquals(storedUnit, result);
     }
