@@ -1,4 +1,4 @@
-package maestro.milagro.StorageServer.client;
+package maestro.milagro.StorageServer.config.security;
 
 import jakarta.security.auth.message.AuthException;
 import maestro.milagro.StorageServer.model.User;

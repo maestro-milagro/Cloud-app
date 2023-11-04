@@ -1,7 +1,7 @@
 package maestro.milagro.StorageServer.service;
 
 import jakarta.security.auth.message.AuthException;
-import maestro.milagro.StorageServer.client.JWTClient;
+import maestro.milagro.StorageServer.config.security.JWTClient;
 import maestro.milagro.StorageServer.exceptions.BedCredentials;
 import maestro.milagro.StorageServer.exceptions.UnauthorizedException;
 import maestro.milagro.StorageServer.model.MyFile;
@@ -21,21 +21,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 @Service
 public class StorageService {
-    StorageRepository repository;
-    JWTClient jwtClient;
+    private final StorageRepository repository;
+    private final JWTClient jwtClient;
     @Autowired
     public StorageService(StorageRepository repository, JWTClient jwtClient){
         this.jwtClient = jwtClient;
@@ -53,7 +49,7 @@ public class StorageService {
         byte[] bytes = MessageDigest.getInstance("MD5").digest(data);
         String hash = new BigInteger(1, bytes).toString(16);
         repository.save(new StoredUnit(filename, user, new MyFile(hash, new Binary(BsonBinarySubType.BINARY,file.getBytes()))));
-        return new ResponseEntity<>("Success upload", HttpStatus.OK);
+        return new ResponseEntity<>("Success uploaded", HttpStatus.OK);
     }
     public ResponseEntity<String> deleteFile(String authToken, String filename) throws BedCredentials, AuthException, UnauthorizedException {
         if(authToken == null || filename == null){

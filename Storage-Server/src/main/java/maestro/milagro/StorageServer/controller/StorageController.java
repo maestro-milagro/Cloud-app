@@ -4,6 +4,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import jakarta.security.auth.message.AuthException;
 import jakarta.ws.rs.QueryParam;
+import lombok.RequiredArgsConstructor;
 import maestro.milagro.StorageServer.exceptions.BedCredentials;
 import maestro.milagro.StorageServer.exceptions.UnauthorizedException;
 import maestro.milagro.StorageServer.model.MyFile;
@@ -25,9 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class StorageController {
     @Autowired
-    StorageService service;
+    private final StorageService service;
     @PostMapping("/file")
     public ResponseEntity<String> saveFile(@RequestHeader("auth-token") String authToken, @QueryParam("filename") String filename, @RequestParam("file") MultipartFile file) throws UnauthorizedException, AuthException, BedCredentials, IOException, NoSuchAlgorithmException {
         return service.saveFile(authToken, filename, file);
@@ -40,13 +42,13 @@ public class StorageController {
     public ResponseEntity<Resource> downloadFile(@RequestHeader("auth-token") String authToken, @QueryParam("filename") String filename) throws UnauthorizedException, AuthException, BedCredentials {
         return service.downloadFile(authToken, filename);
     }
-    @GetMapping("/list")
-    public ResponseEntity<List<ListUnit>> getList(@RequestHeader("auth-token") String authToken, @QueryParam("limit") int limit) throws UnauthorizedException, AuthException, BedCredentials {
-        return service.getAllWithLimit(authToken, limit);
-    }
     @PutMapping("/file")
     public ResponseEntity<String> editFilename(@RequestHeader("auth-token") String authToken, @QueryParam("filename") String filename, @RequestBody NewFileName name) throws UnauthorizedException, AuthException, BedCredentials {
         service.editFilename(authToken, filename, name.getFilename());
         return new ResponseEntity<>("Success upload", HttpStatus.OK);
+    }
+    @GetMapping("/list")
+    public ResponseEntity<List<ListUnit>> getList(@RequestHeader("auth-token") String authToken, @QueryParam("limit") int limit) throws UnauthorizedException, AuthException, BedCredentials {
+        return service.getAllWithLimit(authToken, limit);
     }
 }

@@ -1,7 +1,7 @@
 package maestro.milagro.StorageServer;
 
 import jakarta.security.auth.message.AuthException;
-import maestro.milagro.StorageServer.client.JWTClient;
+import maestro.milagro.StorageServer.config.security.JWTClient;
 import maestro.milagro.StorageServer.exceptions.BedCredentials;
 import maestro.milagro.StorageServer.exceptions.UnauthorizedException;
 import maestro.milagro.StorageServer.model.ListUnit;
