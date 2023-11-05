@@ -44,7 +44,7 @@ public class StorageController {
     }
     @PutMapping("/file")
     public ResponseEntity<String> editFilename(@RequestHeader("auth-token") String authToken, @QueryParam("filename") String filename, @RequestBody NewFileName name) throws UnauthorizedException, AuthException, BedCredentials {
-        service.editFilename(authToken, filename, name.getFilename());
+        service.editFilename(authToken, filename, name.filename());
         return new ResponseEntity<>("Success upload", HttpStatus.OK);
     }
     @GetMapping("/list")

@@ -40,7 +40,7 @@ public class StorageServiceTest {
         String expected = "Success upload";
         MultipartFile multipartFile = Mockito.mock(MultipartFile.class);
         Mockito.when(jwtClient.getUser(accessToken)).thenReturn(user);
-        Mockito.when(multipartFile.getBytes()).thenReturn(myFile.getHash().getBytes());
+        Mockito.when(multipartFile.getBytes()).thenReturn(myFile.hash().getBytes());
 
         String result = service.saveFile(accessToken, filename, multipartFile).getBody();
 
@@ -48,7 +48,7 @@ public class StorageServiceTest {
     }
     @Test
     public void downloadFileTest() throws UnauthorizedException, AuthException, BedCredentials {
-        Resource expected = new ByteArrayResource(myFile.getFile().getData());
+        Resource expected = new ByteArrayResource(myFile.file().getData());
         Mockito.when(jwtClient.getUser(accessToken)).thenReturn(user);
         Mockito.when(repository.findByFilenameAndUser(filename, user)).thenReturn(Optional.of(storedUnit));
 
@@ -60,7 +60,7 @@ public class StorageServiceTest {
     public void getAllWithLimitTest() throws UnauthorizedException, AuthException, BedCredentials {
         int limit = 2;
         List<ListUnit> expected = new ArrayList<>();
-        expected.add(new ListUnit(filename, myFile.getFile().length()));
+        expected.add(new ListUnit(filename, myFile.file().length()));
         Mockito.when(jwtClient.getUser(accessToken)).thenReturn(user);
         Mockito.when(repository.findByUser(user)).thenReturn(List.of(storedUnit));
 

@@ -8,10 +8,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class MyFile {
-    private String hash;
-    private Binary file;
-}
+//@Data
+//@AllArgsConstructor
+//@NoArgsConstructor
+//public class MyFile {
+//    private String hash;
+//    private Binary file;
+//}
+public record MyFile (String hash, Binary file){}

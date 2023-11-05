@@ -42,7 +42,7 @@ public class StorageService {
             throw new BedCredentials("Error input data");
         }
         User user = jwtClient.getUser(authToken);
-        if(user.getLogin() == null){
+        if(user.login() == null){
             throw new UnauthorizedException("Unauthorized error");
         }
         byte[] data = file.getBytes();
@@ -56,7 +56,7 @@ public class StorageService {
             throw new BedCredentials("Error input data");
         }
         User user = jwtClient.getUser(authToken);
-        if(user.getLogin() == null){
+        if(user.login() == null){
             throw new UnauthorizedException("Unauthorized error");
         }
         repository.deleteByFilename(filename);
@@ -68,13 +68,13 @@ public class StorageService {
             throw new BedCredentials("Error input data");
         }
         User user = jwtClient.getUser(authToken);
-        if(user.getLogin() == null){
+        if(user.login() == null){
             throw new UnauthorizedException("Unauthorized error");
         }
         MyFile myFile = repository.findByFilenameAndUser(filename, user).get().getMyFile();
-        Resource resource = new ByteArrayResource(myFile.getFile().getData());
+        Resource resource = new ByteArrayResource(myFile.file().getData());
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; hash=\"" + myFile.getHash() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; hash=\"" + myFile.hash() + "\"")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(resource);
     }
@@ -83,7 +83,7 @@ public class StorageService {
             throw new BedCredentials("Error input data");
         }
         User user = jwtClient.getUser(authToken);
-        if(user.getLogin() == null){
+        if(user.login() == null){
             throw new UnauthorizedException("Unauthorized error");
         }
         List<StoredUnit> list1 = repository.findByUser(user);
@@ -92,7 +92,7 @@ public class StorageService {
             return new ResponseEntity<>(list, HttpStatus.OK);
         }
         for (StoredUnit s : list1) {
-            list.add(new ListUnit(s.getFilename(), s.getMyFile().getFile().length()));
+            list.add(new ListUnit(s.getFilename(), s.getMyFile().file().length()));
         }
         if(limit > list.size()){
             return new ResponseEntity<>(list, HttpStatus.OK);
@@ -104,7 +104,7 @@ public class StorageService {
             throw new BedCredentials("Error input data");
         }
         User user = jwtClient.getUser(authToken);
-        if(user.getLogin() == null){
+        if(user.login() == null){
             throw new UnauthorizedException("Unauthorized error");
         }
         StoredUnit storedUnit = repository.findByFilenameAndUser(filename, user).get();
