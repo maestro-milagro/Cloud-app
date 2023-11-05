@@ -1,6 +1,6 @@
-package maestro.milagro.UserService.config;
+package maestro.milagro.UserService.config.security;
 
-import maestro.milagro.UserService.client.JWTClient;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.reactive.LoadBalancedExchangeFilterFunction;
 import org.springframework.context.annotation.Bean;
@@ -10,10 +10,11 @@ import org.springframework.web.reactive.function.client.support.WebClientAdapter
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
+@RequiredArgsConstructor
 public class WebClientConfig {
 
     @Autowired
-    private LoadBalancedExchangeFilterFunction filterFunction;
+    private final LoadBalancedExchangeFilterFunction filterFunction;
 
 
     @Bean

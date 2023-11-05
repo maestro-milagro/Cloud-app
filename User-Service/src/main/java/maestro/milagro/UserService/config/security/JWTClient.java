@@ -1,4 +1,4 @@
-package maestro.milagro.UserService.client;
+package maestro.milagro.UserService.config.security;
 
 import jakarta.security.auth.message.AuthException;
 import maestro.milagro.UserService.model.ResponseLog;

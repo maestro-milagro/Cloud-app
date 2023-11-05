@@ -1,6 +1,7 @@
 package maestro.milagro.JWTService.controller;
 
 import jakarta.security.auth.message.AuthException;
+import lombok.RequiredArgsConstructor;
 import maestro.milagro.JWTService.model.ResponseLog;
 import maestro.milagro.JWTService.model.User;
 import maestro.milagro.JWTService.model.UserAndTokens;
@@ -14,11 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class JWTController {
     @Autowired
-    AuthService authService;
+    private final AuthService authService;
     @Autowired
-    TokenRepository redisRepository;
+    private final TokenRepository redisRepository;
     @PostMapping("/new/token")
     public ResponseEntity<ResponseLog> newUser(@RequestBody User user){
         return new ResponseEntity<>(authService.login(user), HttpStatus.OK);
@@ -42,20 +44,6 @@ public class JWTController {
     @PostMapping("/logout")
     public void logout(@RequestBody String accessToken) throws AuthException {
         authService.logout(accessToken.substring(7));
-    }
-    @PostMapping("/check")
-    public void check(@RequestBody UserAndTokens userAndTokens){
-//        System.out.println(userAndTokens.getUser());
-//        System.out.println(userAndTokens.getRefreshToken());
-//        redisRepository.add(userAndTokens.getUser(), userAndTokens.getRefreshToken());
-//        System.out.println(redisRepository.findToken(userAndTokens.getUser()));
-        System.out.println(userAndTokens.getUser());
-        System.out.println(userAndTokens.getRefreshToken());
-        redisRepository.save(userAndTokens);
-        UserAndTokens s = userAndTokens;
-        s.setAccessToken("2313");
-        redisRepository.save(s);
-        System.out.println(redisRepository.findAll());
     }
 
 }

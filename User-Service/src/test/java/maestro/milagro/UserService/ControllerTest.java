@@ -1,7 +1,7 @@
 package maestro.milagro.UserService;
 
 import jakarta.security.auth.message.AuthException;
-import maestro.milagro.UserService.client.JWTClient;
+import maestro.milagro.UserService.config.security.JWTClient;
 import maestro.milagro.UserService.controller.Controller;
 import maestro.milagro.UserService.exceptions.BedCredentials;
 import maestro.milagro.UserService.model.ResponseLog;
@@ -10,7 +10,6 @@ import maestro.milagro.UserService.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

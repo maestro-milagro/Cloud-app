@@ -1,7 +1,7 @@
 package maestro.milagro.UserService.controller;
 
 import jakarta.security.auth.message.AuthException;
-import maestro.milagro.UserService.client.JWTClient;
+import maestro.milagro.UserService.config.security.JWTClient;
 import maestro.milagro.UserService.exceptions.BedCredentials;
 import maestro.milagro.UserService.model.ResponseLog;
 import maestro.milagro.UserService.model.User;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class Controller {
-    JWTClient jwtClient;
+    private final JWTClient jwtClient;
 
-    UserRepository userRepository;
+    private final UserRepository userRepository;
     @Autowired
     public Controller(JWTClient jwtClient, UserRepository userRepository){
         this.jwtClient = jwtClient;

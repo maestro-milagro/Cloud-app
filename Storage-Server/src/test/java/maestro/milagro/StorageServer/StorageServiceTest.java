@@ -42,7 +42,7 @@ public class StorageServiceTest {
         Mockito.when(jwtClient.getUser(accessToken)).thenReturn(user);
         Mockito.when(multipartFile.getBytes()).thenReturn(myFile.hash().getBytes());
 
-        String result = service.saveFile(accessToken, filename, multipartFile).getBody();
+        String result = service.saveFile(accessToken, filename, multipartFile);
 
         Assertions.assertEquals(expected, result);
     }
@@ -64,7 +64,7 @@ public class StorageServiceTest {
         Mockito.when(jwtClient.getUser(accessToken)).thenReturn(user);
         Mockito.when(repository.findByUser(user)).thenReturn(List.of(storedUnit));
 
-        List<ListUnit> result = service.getAllWithLimit(accessToken, limit).getBody();
+        List<ListUnit> result = service.getAllWithLimit(accessToken, limit);
 
         Assertions.assertEquals(expected, result);
 

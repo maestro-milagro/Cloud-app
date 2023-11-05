@@ -37,7 +37,7 @@ public class StorageService {
         this.jwtClient = jwtClient;
         this.repository = repository;
     }
-    public ResponseEntity<String> saveFile(String authToken, String filename, MultipartFile file) throws AuthException, UnauthorizedException, BedCredentials, IOException, NoSuchAlgorithmException {
+    public String saveFile(String authToken, String filename, MultipartFile file) throws AuthException, UnauthorizedException, BedCredentials, IOException, NoSuchAlgorithmException {
         if(authToken == null || filename == null || file == null){
             throw new BedCredentials("Error input data");
         }
@@ -49,9 +49,9 @@ public class StorageService {
         byte[] bytes = MessageDigest.getInstance("MD5").digest(data);
         String hash = new BigInteger(1, bytes).toString(16);
         repository.save(new StoredUnit(filename, user, new MyFile(hash, new Binary(BsonBinarySubType.BINARY,file.getBytes()))));
-        return new ResponseEntity<>("Success uploaded", HttpStatus.OK);
+        return "Success uploaded";
     }
-    public ResponseEntity<String> deleteFile(String authToken, String filename) throws BedCredentials, AuthException, UnauthorizedException {
+    public String deleteFile(String authToken, String filename) throws BedCredentials, AuthException, UnauthorizedException {
         if(authToken == null || filename == null){
             throw new BedCredentials("Error input data");
         }
@@ -61,7 +61,7 @@ public class StorageService {
         }
         repository.deleteByFilename(filename);
 
-        return new ResponseEntity<>("Success deleted", HttpStatus.OK);
+        return "Success deleted";
     }
     public ResponseEntity<Resource> downloadFile(String authToken, String filename) throws BedCredentials, AuthException, UnauthorizedException {
         if(authToken == null || filename == null){
@@ -78,7 +78,7 @@ public class StorageService {
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(resource);
     }
-    public ResponseEntity<List<ListUnit>> getAllWithLimit(String authToken, Integer limit) throws BedCredentials, UnauthorizedException, AuthException {
+    public List<ListUnit> getAllWithLimit(String authToken, Integer limit) throws BedCredentials, UnauthorizedException, AuthException {
         if(authToken == null || limit == null){
             throw new BedCredentials("Error input data");
         }
@@ -89,15 +89,15 @@ public class StorageService {
         List<StoredUnit> list1 = repository.findByUser(user);
         List<ListUnit> list = new ArrayList<>();
         if(list1.isEmpty()) {
-            return new ResponseEntity<>(list, HttpStatus.OK);
+            return list;
         }
         for (StoredUnit s : list1) {
             list.add(new ListUnit(s.getFilename(), s.getMyFile().file().length()));
         }
         if(limit > list.size()){
-            return new ResponseEntity<>(list, HttpStatus.OK);
+            return list;
         }
-        return  new ResponseEntity<>(list.subList(0, limit), HttpStatus.OK);
+        return  list.subList(0, limit);
     }
     public void editFilename(String authToken, String filename, String name) throws BedCredentials, UnauthorizedException, AuthException {
         if(authToken == null || filename == null){

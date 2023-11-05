@@ -32,11 +32,13 @@ public class StorageController {
     private final StorageService service;
     @PostMapping("/file")
     public ResponseEntity<String> saveFile(@RequestHeader("auth-token") String authToken, @QueryParam("filename") String filename, @RequestParam("file") MultipartFile file) throws UnauthorizedException, AuthException, BedCredentials, IOException, NoSuchAlgorithmException {
-        return service.saveFile(authToken, filename, file);
+        String msg = service.saveFile(authToken, filename, file);
+        return new ResponseEntity<>(msg, HttpStatus.OK);
     }
     @DeleteMapping("/file")
     public ResponseEntity<String> deleteFile(@RequestHeader("auth-token") String authToken, @QueryParam("filename") String filename) throws UnauthorizedException, AuthException, BedCredentials {
-        return service.deleteFile(authToken, filename);
+        String msg = service.deleteFile(authToken, filename);
+        return new ResponseEntity<>(msg, HttpStatus.OK);
     }
     @GetMapping("/file")
     public ResponseEntity<Resource> downloadFile(@RequestHeader("auth-token") String authToken, @QueryParam("filename") String filename) throws UnauthorizedException, AuthException, BedCredentials {
@@ -49,6 +51,7 @@ public class StorageController {
     }
     @GetMapping("/list")
     public ResponseEntity<List<ListUnit>> getList(@RequestHeader("auth-token") String authToken, @QueryParam("limit") int limit) throws UnauthorizedException, AuthException, BedCredentials {
-        return service.getAllWithLimit(authToken, limit);
+        List<ListUnit> list = service.getAllWithLimit(authToken, limit);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }
